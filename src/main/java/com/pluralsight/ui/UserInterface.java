@@ -1,15 +1,27 @@
 package com.pluralsight.ui;
 
+import com.pluralsight.data.ReceiptManager;
+import com.pluralsight.models.*;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {static Scanner scanner = new Scanner(System.in);
-    public void displayHomeScreen(){
+
+    // CURRENT ACTIVE ORDER
+    private static Order currentOrder;
+
+    // HOME SCREEN
+    public void displayHomeScreen() {
+
         boolean running = true;
-        while (running){
-            System.out.println("\n===== Ctrl-alt-deli Sandwich Shop =====");
+
+        while (running) {
+
+            System.out.println("\n===== Ctrl-Alt-Deli Sandwich Shop =====");
             System.out.println("1) New Order");
             System.out.println("0) Exit");
+
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
@@ -17,7 +29,13 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
             switch (choice) {
 
-                case 1 -> orderScreen();
+                case 1 -> {
+
+                    // START NEW ORDER
+                    currentOrder = new Order();
+
+                    orderScreen();
+                }
 
                 case 0 -> {
                     running = false;
@@ -27,10 +45,11 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
                 default -> System.out.println("Invalid option.");
             }
         }
-
     }
 
-    public static void orderScreen(){
+    // ORDER SCREEN
+    public static void orderScreen() {
+
         boolean ordering = true;
 
         while (ordering) {
@@ -56,12 +75,25 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
                 case 3 -> addChips();
 
                 case 4 -> {
-                    checkout();
-                    ordering = false;
+
+                    if (currentOrder.getItems().isEmpty()) {
+
+                        System.out.println("Your order is empty.");
+
+                    } else {
+
+                        checkout();
+
+                        ordering = false;
+                    }
                 }
 
                 case 0 -> {
+
+                    currentOrder = null;
+
                     System.out.println("Order canceled.");
+
                     ordering = false;
                 }
 
@@ -70,7 +102,7 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
         }
     }
 
-    // ADD SANDWICH SCREEN
+    // ADD SANDWICH
     public static void addSandwich() {
 
         System.out.println("\n===== ADD SANDWICH =====");
@@ -85,6 +117,16 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
         int breadChoice = scanner.nextInt();
         scanner.nextLine();
 
+        String bread = switch (breadChoice) {
+
+            case 1 -> "White";
+            case 2 -> "Wheat";
+            case 3 -> "Rye";
+            case 4 -> "Wrap";
+
+            default -> "White";
+        };
+
         // SIZE
         System.out.println("\nSelect sandwich size:");
         System.out.println("1) 4 inch");
@@ -94,36 +136,45 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
         int sizeChoice = scanner.nextInt();
         scanner.nextLine();
 
-        // CALL SEPARATE METHODS
-        ArrayList<String> meats = getMeats();
-        ArrayList<String> cheeses = getCheeses();
-        ArrayList<String> toppings = getToppings();
-        ArrayList<String> sauces = getSauces();
+        String size = switch (sizeChoice) {
+
+            case 1 -> "4";
+            case 2 -> "8";
+            case 3 -> "12";
+
+            default -> "4";
+        };
 
         // TOASTED
         System.out.print("\nWould you like the sandwich toasted? (yes/no): ");
-        String toasted = scanner.nextLine();
 
-        // DISPLAY ORDER SUMMARY
-        System.out.println("\n===== SANDWICH SUMMARY =====");
+        boolean toasted = scanner.nextLine()
+                .equalsIgnoreCase("yes");
 
-        System.out.println("Bread Choice: " + breadChoice);
-        System.out.println("Size Choice: " + sizeChoice);
+        // CREATE SANDWICH OBJECT
+        Sandwich sandwich = new Sandwich(
+                bread,
+                size,
+                toasted
+        );
 
-        System.out.println("Meats: " + meats);
-        System.out.println("Cheeses: " + cheeses);
-        System.out.println("Toppings: " + toppings);
-        System.out.println("Sauces: " + sauces);
+        // ADD TOPPINGS
+        getMeats(sandwich);
 
-        System.out.println("Toasted: " + toasted);
+        getCheeses(sandwich);
+
+        getToppings(sandwich);
+
+        getSauces(sandwich);
+
+        // ADD TO ORDER
+        currentOrder.addItem(sandwich);
 
         System.out.println("\nSandwich added successfully!");
     }
 
-    // MEATS METHOD
-    public static ArrayList<String> getMeats() {
-
-        ArrayList<String> meats = new ArrayList<>();
+    // MEATS
+    public static void getMeats(Sandwich sandwich) {
 
         boolean choosingMeats = true;
 
@@ -141,31 +192,35 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
             switch (meatChoice) {
 
-                case 1 -> meats.add("Turkey");
+                case 1 -> sandwich.addTopping(
+                        new Topping("Turkey", true, false)
+                );
 
-                case 2 -> meats.add("Ham");
+                case 2 -> sandwich.addTopping(
+                        new Topping("Ham", true, false)
+                );
 
-                case 3 -> meats.add("Roast Beef");
+                case 3 -> sandwich.addTopping(
+                        new Topping("Roast Beef", true, false)
+                );
 
-                case 4 -> meats.add("Chicken");
+                case 4 -> sandwich.addTopping(
+                        new Topping("Chicken", true, false)
+                );
 
                 case 0 -> choosingMeats = false;
 
                 default -> System.out.println("Invalid option.");
             }
         }
-
-        return meats;
     }
 
-    // CHEESES METHOD
-    public static ArrayList<String> getCheeses() {
+    // CHEESES
+    public static void getCheeses(Sandwich sandwich) {
 
-        ArrayList<String> cheeses = new ArrayList<>();
+        boolean choosingCheeses = true;
 
-        boolean choosingCheese = true;
-
-        while (choosingCheese) {
+        while (choosingCheeses) {
 
             System.out.println("\nChoose cheeses:");
             System.out.println("1) American");
@@ -179,28 +234,31 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
             switch (cheeseChoice) {
 
-                case 1 -> cheeses.add("American");
+                case 1 -> sandwich.addTopping(
+                        new Topping("American", true, false)
+                );
 
-                case 2 -> cheeses.add("Swiss");
+                case 2 -> sandwich.addTopping(
+                        new Topping("Swiss", true, false)
+                );
 
-                case 3 -> cheeses.add("Cheddar");
+                case 3 -> sandwich.addTopping(
+                        new Topping("Cheddar", true, false)
+                );
 
-                case 4 -> cheeses.add("Provolone");
+                case 4 -> sandwich.addTopping(
+                        new Topping("Provolone", true, false)
+                );
 
-                case 0 -> choosingCheese = false;
+                case 0 -> choosingCheeses = false;
 
                 default -> System.out.println("Invalid option.");
             }
         }
-
-        return cheeses;
     }
 
-
-    // TOPPINGS METHOD
-    public static ArrayList<String> getToppings() {
-
-        ArrayList<String> toppings = new ArrayList<>();
+    // TOPPINGS
+    public static void getToppings(Sandwich sandwich) {
 
         boolean choosingToppings = true;
 
@@ -219,29 +277,35 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
             switch (toppingChoice) {
 
-                case 1 -> toppings.add("Lettuce");
+                case 1 -> sandwich.addTopping(
+                        new Topping("Lettuce", false, false)
+                );
 
-                case 2 -> toppings.add("Tomatoes");
+                case 2 -> sandwich.addTopping(
+                        new Topping("Tomatoes", false, false)
+                );
 
-                case 3 -> toppings.add("Onions");
+                case 3 -> sandwich.addTopping(
+                        new Topping("Onions", false, false)
+                );
 
-                case 4 -> toppings.add("Pickles");
+                case 4 -> sandwich.addTopping(
+                        new Topping("Pickles", false, false)
+                );
 
-                case 5 -> toppings.add("Jalapeños");
+                case 5 -> sandwich.addTopping(
+                        new Topping("Jalapeños", false, false)
+                );
 
                 case 0 -> choosingToppings = false;
 
                 default -> System.out.println("Invalid option.");
             }
         }
-
-        return toppings;
     }
 
-    // SAUCES METHOD
-    public static ArrayList<String> getSauces() {
-
-        ArrayList<String> sauces = new ArrayList<>();
+    // SAUCES
+    public static void getSauces(Sandwich sandwich) {
 
         boolean choosingSauces = true;
 
@@ -259,78 +323,70 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
             switch (sauceChoice) {
 
-                case 1 -> sauces.add("Mayo");
+                case 1 -> sandwich.addTopping(
+                        new Topping("Mayo", false, false)
+                );
 
-                case 2 -> sauces.add("Mustard");
+                case 2 -> sandwich.addTopping(
+                        new Topping("Mustard", false, false)
+                );
 
-                case 3 -> sauces.add("Ranch");
+                case 3 -> sandwich.addTopping(
+                        new Topping("Ranch", false, false)
+                );
 
-                case 4 -> sauces.add("Chipotle");
+                case 4 -> sandwich.addTopping(
+                        new Topping("Chipotle", false, false)
+                );
 
                 case 0 -> choosingSauces = false;
 
                 default -> System.out.println("Invalid option.");
             }
         }
-
-        return sauces;
     }
 
-    // ADD DRINK SCREEN
+    // ADD DRINK
     public static void addDrink() {
 
         System.out.println("\n===== ADD DRINK =====");
 
-        System.out.println("Select drink size:");
-        System.out.println("1) Small");
-        System.out.println("2) Medium");
-        System.out.println("3) Large");
+        System.out.print("Enter drink flavor: ");
+        String flavor = scanner.nextLine();
 
-        int sizeChoice = scanner.nextInt();
-        scanner.nextLine();
+        System.out.print("Enter drink size (Small/Medium/Large): ");
+        String size = scanner.nextLine();
 
-        System.out.println("\nSelect drink flavor:");
-        System.out.println("1) Coke");
-        System.out.println("2) Sprite");
-        System.out.println("3) Dr Pepper");
-        System.out.println("4) Lemonade");
+        Drink drink = new Drink(flavor, size);
 
-        int flavorChoice = scanner.nextInt();
-        scanner.nextLine();
+        currentOrder.addItem(drink);
 
-        System.out.println("\nDrink added successfully!");
+        System.out.println("Drink added successfully!");
     }
 
-    // ADD CHIPS SCREEN
+    // ADD CHIPS
     public static void addChips() {
 
         System.out.println("\n===== ADD CHIPS =====");
 
-        System.out.println("Select chip type:");
-        System.out.println("1) BBQ");
-        System.out.println("2) Sour Cream & Onion");
-        System.out.println("3) Cheddar");
-        System.out.println("4) Salt & Vinegar");
+        System.out.print("Enter chip type: ");
 
-        int chipChoice = scanner.nextInt();
-        scanner.nextLine();
+        String type = scanner.nextLine();
 
-        System.out.println("\nChips added successfully!");
+        Chips chips = new Chips(type);
+
+        currentOrder.addItem(chips);
+
+        System.out.println("Chips added successfully!");
     }
 
-    // CHECKOUT SCREEN
+    // CHECKOUT
     public static void checkout() {
 
         System.out.println("\n===== CHECKOUT =====");
 
-        System.out.println("Order Details:");
-        System.out.println("Sandwich: $10.50");
-        System.out.println("Drink: $2.50");
-        System.out.println("Chips: $1.50");
-
-        double total = 10.50 + 2.50 + 1.50;
-
-        System.out.printf("Total Price: $%.2f%n", total);
+        // DISPLAY ACTUAL ORDER
+        System.out.println(currentOrder);
 
         System.out.println("\n1) Confirm");
         System.out.println("0) Cancel");
@@ -341,11 +397,14 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
         switch (choice) {
 
             case 1 -> {
+
+                ReceiptManager.saveReceipt(currentOrder);
+
                 System.out.println("Receipt created!");
                 System.out.println("Returning to home screen...");
             }
 
-            case 0 -> System.out.println("Order canceled.");
+            case 0 -> System.out.println("Checkout canceled.");
 
             default -> System.out.println("Invalid option.");
         }

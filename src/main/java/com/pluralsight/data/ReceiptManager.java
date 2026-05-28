@@ -29,6 +29,8 @@ public class ReceiptManager {
                     order.getTotal()
             );
 
+            Files.createDirectories(Path.of("receipts"));
+
             Files.write(
                     Path.of(fileName),
                     receiptText.getBytes()
