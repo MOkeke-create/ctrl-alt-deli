@@ -3,7 +3,7 @@ package com.pluralsight.ui;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Display {static Scanner scanner = new Scanner(System.in);
+public class UserInterface {static Scanner scanner = new Scanner(System.in);
     public void displayHomeScreen(){
         boolean running = true;
         while (running){
@@ -94,7 +94,35 @@ public class Display {static Scanner scanner = new Scanner(System.in);
         int sizeChoice = scanner.nextInt();
         scanner.nextLine();
 
-        // MULTIPLE MEATS
+        // CALL SEPARATE METHODS
+        ArrayList<String> meats = getMeats();
+        ArrayList<String> cheeses = getCheeses();
+        ArrayList<String> toppings = getToppings();
+        ArrayList<String> sauces = getSauces();
+
+        // TOASTED
+        System.out.print("\nWould you like the sandwich toasted? (yes/no): ");
+        String toasted = scanner.nextLine();
+
+        // DISPLAY ORDER SUMMARY
+        System.out.println("\n===== SANDWICH SUMMARY =====");
+
+        System.out.println("Bread Choice: " + breadChoice);
+        System.out.println("Size Choice: " + sizeChoice);
+
+        System.out.println("Meats: " + meats);
+        System.out.println("Cheeses: " + cheeses);
+        System.out.println("Toppings: " + toppings);
+        System.out.println("Sauces: " + sauces);
+
+        System.out.println("Toasted: " + toasted);
+
+        System.out.println("\nSandwich added successfully!");
+    }
+
+    // MEATS METHOD
+    public static ArrayList<String> getMeats() {
+
         ArrayList<String> meats = new ArrayList<>();
 
         boolean choosingMeats = true;
@@ -127,7 +155,12 @@ public class Display {static Scanner scanner = new Scanner(System.in);
             }
         }
 
-        // MULTIPLE CHEESES
+        return meats;
+    }
+
+    // CHEESES METHOD
+    public static ArrayList<String> getCheeses() {
+
         ArrayList<String> cheeses = new ArrayList<>();
 
         boolean choosingCheese = true;
@@ -160,7 +193,13 @@ public class Display {static Scanner scanner = new Scanner(System.in);
             }
         }
 
-        // MULTIPLE TOPPINGS
+        return cheeses;
+    }
+
+
+    // TOPPINGS METHOD
+    public static ArrayList<String> getToppings() {
+
         ArrayList<String> toppings = new ArrayList<>();
 
         boolean choosingToppings = true;
@@ -196,7 +235,12 @@ public class Display {static Scanner scanner = new Scanner(System.in);
             }
         }
 
-        // MULTIPLE SAUCES
+        return toppings;
+    }
+
+    // SAUCES METHOD
+    public static ArrayList<String> getSauces() {
+
         ArrayList<String> sauces = new ArrayList<>();
 
         boolean choosingSauces = true;
@@ -229,24 +273,7 @@ public class Display {static Scanner scanner = new Scanner(System.in);
             }
         }
 
-        // TOASTED
-        System.out.print("\nWould you like the sandwich toasted? (yes/no): ");
-        String toasted = scanner.nextLine();
-
-        // DISPLAY ORDER SUMMARY
-        System.out.println("\n===== SANDWICH SUMMARY =====");
-
-        System.out.println("Bread Choice: " + breadChoice);
-        System.out.println("Size Choice: " + sizeChoice);
-
-        System.out.println("Meats: " + meats);
-        System.out.println("Cheeses: " + cheeses);
-        System.out.println("Toppings: " + toppings);
-        System.out.println("Sauces: " + sauces);
-
-        System.out.println("Toasted: " + toasted);
-
-        System.out.println("\nSandwich added successfully!");
+        return sauces;
     }
 
     // ADD DRINK SCREEN

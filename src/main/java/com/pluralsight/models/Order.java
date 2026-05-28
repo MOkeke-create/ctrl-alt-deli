@@ -1,6 +1,7 @@
 package com.pluralsight.models;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Order {
     private ArrayList<MenuItem> items = new ArrayList<>();
@@ -10,26 +11,15 @@ public class Order {
     }
 
     public double getTotal() {
-
-        double total = 0;
-
-        for (MenuItem item : items) {
-            total += item.getPrice();
-        }
-
-        return total;
+        return items.stream()
+                .mapToDouble(MenuItem::getPrice)
+                .sum();
     }
 
     public boolean hasSandwich() {
 
-        for (MenuItem item : items) {
-
-            if (item instanceof Sandwich) {
-                return true;
-            }
-        }
-
-        return false;
+        return items.stream()
+                .anyMatch(item -> item instanceof Sandwich);
     }
 
     public ArrayList<MenuItem> getItems() {
@@ -38,18 +28,14 @@ public class Order {
 
     @Override
     public String toString() {
+        String orderDetails = items.stream()
+                .map(MenuItem::toString)
+                .collect(Collectors.joining("\n"));
+        return """
+        ===== ORDER DETAILS =====
+        %s
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("\n===== ORDER DETAILS =====\n");
-
-        for (MenuItem item : items) {
-            sb.append(item).append("\n");
-        }
-
-        sb.append("\nTOTAL: $")
-                .append(String.format("%.2f", getTotal()));
-
-        return sb.toString();
+        TOTAL: $%.2f
+        """.formatted(orderDetails, getTotal());
     }
 }
