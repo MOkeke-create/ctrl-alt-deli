@@ -78,6 +78,10 @@ Save orders to file or database
 Add pricing system and receipts
 Add order history
 Unit tests for models and order logic
+Diagram link:
+<img width="1693" height="929" alt="Diagram" src="https://github.com/user-attachments/assets/6fc7e3ef-b25c-437b-8a9f-aab5be65b549" />
+
 👨‍💻 Author
+Michael Okeke
 
 Built as part of a Java learning project focused on OOP design, user input handling, and modular application structure.
