@@ -19,10 +19,10 @@ public class ReceiptManager {
     public static void saveReceipt(Order order) {
 
         try {
-            // Ensure directory exists
+            // Ensure directory exists if not create the directory
             Files.createDirectories(RECEIPT_DIR);
 
-            // Timestamp
+            // Timestamp off the receipt
             String timestamp = LocalDateTime.now()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
