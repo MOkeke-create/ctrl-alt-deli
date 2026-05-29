@@ -364,17 +364,49 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
         System.out.println("\n===== ADD DRINK =====");
 
-        System.out.print("Enter drink flavor: ");
-        String flavor = scanner.nextLine();
+        System.out.println("Select your drink:");
+        System.out.println("1) Sprite");
+        System.out.println("2) Dr.Pepper");
+        System.out.println("3) Coke");
+        System.out.println("4) Sweet Tea");
+        System.out.println("5) Lemonade");
+        System.out.println("0) Cancel");
 
-        System.out.print("Enter drink size (Small/Medium/Large): ");
+        System.out.print("Choose an option: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // clear buffer
+
+        String drinkType;
+
+        switch (choice) {
+
+            case 1 -> drinkType = "Sprite";
+            case 2 -> drinkType = "Dr.Pepper";
+            case 3 -> drinkType = "Coke";
+            case 4 -> drinkType = "Sweet Tea";
+            case 5 -> drinkType = "Lemonade";
+
+            case 0 -> {
+                System.out.println("Drink selection canceled.");
+                return;
+            }
+
+            default -> {
+                System.out.println("Invalid option.");
+                return;
+            }
+        }
+
+        System.out.println("\nEnter drink size:");
+        System.out.println("Small / Medium / Large");
+        System.out.print("Size: ");
         String size = scanner.nextLine();
 
-        Drink drink = new Drink(flavor, size);
+        Drink drink = new Drink(drinkType, size);
 
         currentOrder.addItem(drink);
 
-        System.out.println("Drink added successfully!");
+        System.out.println(drinkType + " added successfully!");
     }
 
     // ADD CHIPS
