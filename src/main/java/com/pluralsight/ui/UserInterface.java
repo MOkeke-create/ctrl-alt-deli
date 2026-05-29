@@ -188,6 +188,8 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
             System.out.println("2) Ham");
             System.out.println("3) Roast Beef");
             System.out.println("4) Chicken");
+            System.out.println("5) Bacon");
+            System.out.println("6) Steak");
             System.out.println("0) Done");
 
             int meatChoice = scanner.nextInt();
@@ -196,19 +198,27 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
             switch (meatChoice) {
 
                 case 1 -> sandwich.addTopping(
-                        new Topping("Turkey", true, false)
+                        new Topping("Turkey", false, false)
                 );
 
                 case 2 -> sandwich.addTopping(
-                        new Topping("Ham", true, false)
+                        new Topping("Ham", false, false)
                 );
 
                 case 3 -> sandwich.addTopping(
-                        new Topping("Roast Beef", true, false)
+                        new Topping("Roast Beef", false, false)
                 );
 
                 case 4 -> sandwich.addTopping(
                         new Topping("Chicken", true, false)
+                );
+
+                case 5 -> sandwich.addTopping(
+                        new Topping("Bacon",true,false)
+                );
+
+                case 6 -> sandwich.addTopping(
+                        new Topping("Steak",true,false)
                 );
 
                 case 0 -> choosingMeats = false;
@@ -238,7 +248,7 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
             switch (cheeseChoice) {
 
                 case 1 -> sandwich.addTopping(
-                        new Topping("American", true, false)
+                        new Topping("American", false, false)
                 );
 
                 case 2 -> sandwich.addTopping(
@@ -246,7 +256,7 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
                 );
 
                 case 3 -> sandwich.addTopping(
-                        new Topping("Cheddar", true, false)
+                        new Topping("Cheddar", false, false)
                 );
 
                 case 4 -> sandwich.addTopping(
@@ -510,6 +520,8 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
             case 1 -> sandwich = new BLT();
 
             case 2 -> sandwich = new PhillyCheeseSteak();
+
+            case 3 -> sandwich = new ChickenBaconRanch();
 
             default -> {
                 System.out.println("Invalid option.");
