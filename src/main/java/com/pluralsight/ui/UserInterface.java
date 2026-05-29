@@ -3,7 +3,6 @@ package com.pluralsight.ui;
 import com.pluralsight.data.ReceiptManager;
 import com.pluralsight.models.*;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {static Scanner scanner = new Scanner(System.in);
@@ -55,10 +54,11 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
         while (ordering) {
 
             System.out.println("\n===== ORDER SCREEN =====");
-            System.out.println("1) Add Sandwich");
-            System.out.println("2) Add Drink");
-            System.out.println("3) Add Chips");
-            System.out.println("4) Checkout");
+            System.out.println("1) Add Custom Sandwich");
+            System.out.println("2) Add Signature Sandwich");
+            System.out.println("3) Add Drink");
+            System.out.println("4) Add Chips");
+            System.out.println("5) Checkout");
             System.out.println("0) Cancel Order");
 
             System.out.print("Choose an option: ");
@@ -70,11 +70,13 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
                 case 1 -> addSandwich();
 
-                case 2 -> addDrink();
+                case 2 -> addSignatureSandwich();
 
-                case 3 -> addChips();
+                case 3 -> addDrink();
 
-                case 4 -> {
+                case 4 -> addChips();
+
+                case 5 -> {
 
                     if (currentOrder.getItems().isEmpty()) {
 
@@ -119,10 +121,9 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
         String bread = switch (breadChoice) {
 
-            case 1 -> "White";
-            case 2 -> "Wheat";
-            case 3 -> "Rye";
-            case 4 -> "Wrap";
+            case 1 -> "Wheat";
+            case 2 -> "Rye";
+            case 3 -> "Wrap";
 
             default -> "White";
         };
@@ -138,9 +139,8 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
         String size = switch (sizeChoice) {
 
-            case 1 -> "4";
-            case 2 -> "8";
-            case 3 -> "12";
+            case 1 -> "8";
+            case 2 -> "12";
 
             default -> "4";
         };
@@ -148,8 +148,11 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
         // TOASTED
         System.out.print("\nWould you like the sandwich toasted? (yes/no): ");
 
-        boolean toasted = scanner.nextLine()
-                .equalsIgnoreCase("yes");
+        String input = scanner.nextLine()
+                .trim()
+                .toLowerCase();
+
+        boolean toasted = input.startsWith("y");
 
         // CREATE SANDWICH OBJECT
         Sandwich sandwich = new Sandwich(
@@ -369,15 +372,51 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
         System.out.println("\n===== ADD CHIPS =====");
 
-        System.out.print("Enter chip type: ");
+        System.out.println("Select your chips:");
+        System.out.println("1) BBQ");
+        System.out.println("2) Sour Cream & Onion");
+        System.out.println("3) Cheddar");
+        System.out.println("4) Salt & Vinegar");
+        System.out.println("5) Classic");
+        System.out.println("0) Cancel");
 
-        String type = scanner.nextLine();
+        System.out.print("Choose an option: ");
 
-        Chips chips = new Chips(type);
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        String chipType;
+
+        switch (choice) {
+
+            case 1 -> chipType = "BBQ";
+
+            case 2 -> chipType = "Sour Cream & Onion";
+
+            case 3 -> chipType = "Cheddar";
+
+            case 4 -> chipType = "Salt & Vinegar";
+
+            case 5 -> chipType = "Classic";
+
+            case 0 -> {
+
+                System.out.println("Chip selection canceled.");
+                return;
+            }
+
+            default -> {
+
+                System.out.println("Invalid option.");
+                return;
+            }
+        }
+
+        Chips chips = new Chips(chipType);
 
         currentOrder.addItem(chips);
 
-        System.out.println("Chips added successfully!");
+        System.out.println(chipType + " chips added successfully!");
     }
 
     // CHECKOUT
@@ -408,5 +447,90 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
             default -> System.out.println("Invalid option.");
         }
+    }
+    public static void customizeSignatureSandwich(Sandwich sandwich) {
+
+        boolean customizing = true;
+
+        while (customizing) {
+
+            System.out.println("\n1) Add Topping");
+            System.out.println("2) Finish");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+
+                case 1 -> {
+
+                    System.out.println("1) Lettuce");
+                    System.out.println("2) Tomato");
+                    System.out.println("3) Mayo");
+
+                    int toppingChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch (toppingChoice) {
+
+                        case 1 -> sandwich.addTopping(
+                                new Topping("Lettuce", false, false)
+                        );
+
+                        case 2 -> sandwich.addTopping(
+                                new Topping("Tomato", false, false)
+                        );
+
+                        case 3 -> sandwich.addTopping(
+                                new Topping("Mayo", false, false)
+                        );
+                    }
+                }
+
+                case 2 -> customizing = false;
+
+                default -> System.out.println("Invalid option.");
+            }
+        }
+    }
+    public static void addSignatureSandwich() {
+
+        System.out.println("\n===== SIGNATURE SANDWICHES =====");
+
+        System.out.println("1) BLT");
+        System.out.println("2) Philly Cheese Steak");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        Sandwich sandwich;
+
+        switch (choice) {
+
+            case 1 -> sandwich = new BLT();
+
+            case 2 -> sandwich = new PhillyCheeseSteak();
+
+            default -> {
+                System.out.println("Invalid option.");
+                return;
+            }
+        }
+
+        System.out.println("\nCurrent Sandwich:");
+        System.out.println(sandwich);
+
+        System.out.print("\nWould you like to customize it? (yes/no): ");
+
+        String customize = scanner.nextLine();
+
+        if (customize.equalsIgnoreCase("yes")) {
+
+            customizeSignatureSandwich(sandwich);
+        }
+
+        currentOrder.addItem(sandwich);
+
+        System.out.println("\nSignature sandwich added!");
     }
 }

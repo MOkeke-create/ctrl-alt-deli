@@ -1,7 +1,7 @@
 package com.pluralsight.models;
 
 public abstract class MenuItem implements Priceable {
-    private String name;
+    private final String name;
 
     public MenuItem(String name) {
         this.name = name;
