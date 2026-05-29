@@ -6,7 +6,7 @@ public class PhillyCheeseSteak extends Sandwich{public PhillyCheeseSteak() {
 
     addTopping(new Topping("Steak", true, false));
     addTopping(new Topping("American Cheese", true, false));
-    addTopping(new Topping("Peppers", false, false));
+    addTopping(new Topping("Jalapeños", false, false));
     addTopping(new Topping("Mayo", false, false));
 }
 

@@ -14,7 +14,7 @@ public class ChickenBaconRanch extends Sandwich{
     public String toString() {
 
         return """
-                ===== BLT =====
+                ===== Chicken Bacon Ranch =====
                 %s
                 """.formatted(super.toString());
     }

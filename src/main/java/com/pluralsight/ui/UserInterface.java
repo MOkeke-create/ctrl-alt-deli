@@ -17,7 +17,7 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
         while (running) {
 
-            System.out.println("\n===== Ctrl-Alt-Deli Sandwich Shop =====");
+            printBanner();
             System.out.println("1) New Order");
             System.out.println("0) Exit");
 
@@ -464,42 +464,200 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
         while (customizing) {
 
-            System.out.println("\n1) Add Topping");
-            System.out.println("2) Finish");
+            System.out.println("\n===== CUSTOMIZE SANDWICH =====");
+            System.out.println("1) Add Meat");
+            System.out.println("2) Add Cheese");
+            System.out.println("3) Add Topping");
+            System.out.println("4) Add Sauce");
+            System.out.println("0) Finish");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
 
             switch (choice) {
 
-                case 1 -> {
+                case 1 -> addSignatureItem(sandwich, "MEAT");
+                case 2 -> addSignatureItem(sandwich, "CHEESE");
+                case 3 -> addSignatureItem(sandwich, "TOPPING");
+                case 4 -> addSignatureItem(sandwich, "SAUCE");
 
-                    System.out.println("1) Lettuce");
-                    System.out.println("2) Tomato");
-                    System.out.println("3) Mayo");
+                case 0 -> customizing = false;
 
-                    int toppingChoice = scanner.nextInt();
+                default -> System.out.println("Invalid option.");
+            }
+        }
+    }
+
+    public static void addSignatureItem(Sandwich sandwich, String type) {
+
+        boolean adding = true;
+
+        while (adding) {
+
+            System.out.println("\n===== ADD " + type + " =====");
+
+            switch (type) {
+
+                case "MEAT" -> {
+
+                    System.out.println("1) Turkey");
+                    System.out.println("2) Ham");
+                    System.out.println("3) Roast Beef");
+                    System.out.println("4) Chicken");
+                    System.out.println("5) Bacon");
+                    System.out.println("6) Steak");
+                    System.out.println("0) Back");
+
+                    int choice = scanner.nextInt();
                     scanner.nextLine();
 
-                    switch (toppingChoice) {
+                    switch (choice) {
+
+                        case 1 -> sandwich.addTopping(
+                                new Topping("Turkey", true, false)
+                        );
+
+                        case 2 -> sandwich.addTopping(
+                                new Topping("Ham", true, false)
+                        );
+
+                        case 3 -> sandwich.addTopping(
+                                new Topping("Roast Beef", true, false)
+                        );
+
+                        case 4 -> sandwich.addTopping(
+                                new Topping("Chicken", true, false)
+                        );
+
+                        case 5 -> sandwich.addTopping(
+                                new Topping("Bacon", true, false)
+                        );
+
+                        case 6 -> sandwich.addTopping(
+                                new Topping("Steak", true, false)
+                        );
+
+                        case 0 -> adding = false;
+
+                        default -> System.out.println("Invalid option.");
+                    }
+                }
+
+                case "CHEESE" -> {
+
+                    System.out.println("1) American");
+                    System.out.println("2) Swiss");
+                    System.out.println("3) Cheddar");
+                    System.out.println("4) Provolone");
+                    System.out.println("0) Back");
+
+                    int choice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch (choice) {
+
+                        case 1 -> sandwich.addTopping(
+                                new Topping("American", true, false)
+                        );
+
+                        case 2 -> sandwich.addTopping(
+                                new Topping("Swiss", true, false)
+                        );
+
+                        case 3 -> sandwich.addTopping(
+                                new Topping("Cheddar", true, false)
+                        );
+
+                        case 4 -> sandwich.addTopping(
+                                new Topping("Provolone", true, false)
+                        );
+
+                        case 0 -> adding = false;
+
+                        default -> System.out.println("Invalid option.");
+                    }
+                }
+
+                case "TOPPING" -> {
+
+                    System.out.println("1) Lettuce");
+                    System.out.println("2) Tomatoes");
+                    System.out.println("3) Onions");
+                    System.out.println("4) Pickles");
+                    System.out.println("5) Jalapeños");
+                    System.out.println("0) Back");
+
+                    int choice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch (choice) {
 
                         case 1 -> sandwich.addTopping(
                                 new Topping("Lettuce", false, false)
                         );
 
                         case 2 -> sandwich.addTopping(
-                                new Topping("Tomato", false, false)
+                                new Topping("Tomatoes", false, false)
                         );
 
                         case 3 -> sandwich.addTopping(
-                                new Topping("Mayo", false, false)
+                                new Topping("Onions", false, false)
                         );
+
+                        case 4 -> sandwich.addTopping(
+                                new Topping("Pickles", false, false)
+                        );
+
+                        case 5 -> sandwich.addTopping(
+                                new Topping("Jalapeños", false, false)
+                        );
+
+                        case 0 -> adding = false;
+
+                        default -> System.out.println("Invalid option.");
                     }
                 }
 
-                case 2 -> customizing = false;
+                case "SAUCE" -> {
 
-                default -> System.out.println("Invalid option.");
+                    System.out.println("1) Mayo");
+                    System.out.println("2) Mustard");
+                    System.out.println("3) Ranch");
+                    System.out.println("4) Chipotle");
+                    System.out.println("0) Back");
+
+                    int choice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch (choice) {
+
+                        case 1 -> sandwich.addTopping(
+                                new Topping("Mayo", false, false)
+                        );
+
+                        case 2 -> sandwich.addTopping(
+                                new Topping("Mustard", false, false)
+                        );
+
+                        case 3 -> sandwich.addTopping(
+                                new Topping("Ranch", false, false)
+                        );
+
+                        case 4 -> sandwich.addTopping(
+                                new Topping("Chipotle", false, false)
+                        );
+
+                        case 0 -> adding = false;
+
+                        default -> System.out.println("Invalid option.");
+                    }
+                }
+
+                default -> {
+
+                    System.out.println("Invalid customization type.");
+                    adding = false;
+                }
             }
         }
     }
@@ -509,6 +667,7 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
 
         System.out.println("1) BLT");
         System.out.println("2) Philly Cheese Steak");
+        System.out.println("3) Chicken Bacon Ranch");
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -544,5 +703,22 @@ public class UserInterface {static Scanner scanner = new Scanner(System.in);
         currentOrder.addItem(sandwich);
 
         System.out.println("\nSignature sandwich added!");
+    }
+
+    public static void printBanner() {
+
+        System.out.println("""
+            
+██████╗████████╗██████╗ ██╗      █████╗ ██╗  ████████╗
+██╔══██╗╚══██╔══╝██╔══██╗██║     ██╔══██╗██║  ╚══██╔══╝
+██║  ██║   ██║   ██████╔╝██║     ███████║██║     ██║
+██║  ██║   ██║   ██╔══██╗██║     ██╔══██║██║     ██║
+██████╔╝   ██║   ██║  ██║███████╗██║  ██║███████╗██║
+╚═════╝    ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝
+
+            🥪 CTRL • ALT • DELI 🥪
+      Artisanal Sandwiches • Fresh Daily
+════════════════════════════════════════════════════
+""");
     }
 }
